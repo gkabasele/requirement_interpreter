@@ -1,4 +1,5 @@
 from parser import *
+from lexer import *
 
 class NodeVisitor(object):
     def visit(self, node):
@@ -35,6 +36,12 @@ class Interpreter(NodeVisitor):
         elif node.op.type == EQUAL:
             return self.visit(node.left) == self.visit(node.right)
         elif node.op.type == AND:
+
+            left = self.visit(node.left) 
+            right = self.visit(node.right)
+            print "Left: %s" % left
+            print "Right: %s" % right
+
             return self.visit(node.left) and self.visit(node.right)
         elif node.op.type == OR:
             return self.visit(node.left) or self.visit(node.right)
@@ -49,3 +56,26 @@ class Interpreter(NodeVisitor):
         op = node.op.type
         if op == NOT:
             return not self.visit(node.expr)
+
+    def interpret(self):
+        tree = self.parser.parse()
+        return self.visit(tree)
+
+def main():
+    while True:
+        try:
+            text = raw_input('simple>')
+        except EOFError:
+            break
+        if not text:
+            continue
+
+        lexer = Lexer(text)
+        parser = Parser(lexer)
+        interpreter = Interpreter(parser)
+        result = interpreter.interpret()
+        print(result)
+           
+
+if __name__ == '__main__':
+    main()

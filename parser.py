@@ -17,12 +17,12 @@ class BinOp(AST):
 class Num(AST):
     def __init__(self, token):
         self.token = token
-        self.value = value
+        self.value = token.value
 
 class Bool(AST):
     def __init__(self, token):
         self.token = token
-        self.value = value
+        self.value = token.value
 
 
 class Parser(object):
@@ -102,15 +102,15 @@ class Parser(object):
 
     def conexpr(self):
         token = self.current_token
+        print token
         if token.type == BOOLEAN:
             self.eat(BOOLEAN)
             return Bool(token)
 
         elif token.type == NOT:
             self.eat(NOT)
-            self.conexpr()
-
-        else:
+            node = UnaryOp(op=token, expr=self.conexpr())
+        elif token.type == AND:
             node = self.compexpr()
             while self.current_token.type == AND:
                 self.eat(AND)
@@ -123,13 +123,14 @@ class Parser(object):
         node = self.conexpr()
 
         while self.current_token.type == OR:
+            token = self.current_token
             self.eat(OR)
             node = BinOp(left=node, op=token, right=self.conexpr())
 
         return node
 
     def parse(self):
-        return self.expr()
+        return self.boolexpr()
             
 
 

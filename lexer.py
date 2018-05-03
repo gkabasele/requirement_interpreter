@@ -65,13 +65,13 @@ class Lexer(object):
         i = 0
         if char == 'F':
             text = 'False'
-            while self.current_char is not None and text[i] == self.current_char:
+            while self.current_char is not None and i < len(text) and text[i] == self.current_char:
                 result += self.current_char
                 self.advance()
                 i += 1
         elif char == 'T': 
             text = 'True'
-            while self.current_char is not None and text[i] == self.current_char:
+            while self.current_char is not None and i < len(text) and text[i] == self.current_char :
                 result += self.current_char
                 self.advance()
                 i += 1
