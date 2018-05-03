@@ -1,0 +1,6 @@
+boolexpr: conexpr ( OR conexpr)*
+conexpr: compexpr (AND compexpr)* | not conexpr | boolean
+compexpr: numexpr (less | less_equal | greater_equal | greater | equal) numexpr
+numexpr: term ( plus, minus) term)*
+term: factor ((mul, div) factor)*
+factor: integer | LPAREN expr RPAREN
