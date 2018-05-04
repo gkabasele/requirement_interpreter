@@ -68,8 +68,9 @@ class Interpreter(NodeVisitor):
             return not self.visit(node.expr)
 
     def interpret(self):
-        tree = self.parser.parse()
-        return self.visit(tree)
+        if self.parser is not None:
+            tree = self.parser.parse()
+            return self.visit(tree)
 
     def distance_comparison(self, node_left, node_right, val_left, val_right):
         if type(node_left) is Var or type(node_right) is Var:
@@ -80,8 +81,6 @@ class Interpreter(NodeVisitor):
             self.distances.append(weight * abs( val_left - val_right))
 
     def compute_distance(self, num_var, bool_var):
-        divider = self.num_weight*num_var + self.bool_weight*bool_var
-        s = sum(self.distances)
         d =  float(sum(self.distances))/(self.num_weight*num_var + self.bool_weight*bool_var)
         self.distances =  []
         return d
