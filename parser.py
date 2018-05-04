@@ -79,42 +79,44 @@ class Parser(object):
         return node
 
     def compexpr(self):
-        node = self.numexpr()
-
-        while self.current_token.type in (LESS, LESS_EQ, GREAT_EQ, GREAT, EQUAL, DIFF):
-            token = self.current_token
-            if token.type == LESS:
-                self.eat(LESS)
-            elif token.type == LESS_EQ:
-                self.eat(LESS_EQ)
-            elif token.type == GREAT_EQ:
-                self.eat(GREAT_EQ)
-            elif token.type == GREAT:
-                self.eat(GREAT)
-            elif token.type == EQUAL:
-                self.eat(EQUAL)
-            elif token.type == DIFF:
-                self.eat(DIFF)
-
-            node = BinOp(left=node, op=token, right=self.numexpr())
-
-        return node
-
-    def conexpr(self):
         token = self.current_token
-        print token
+
         if token.type == BOOLEAN:
             self.eat(BOOLEAN)
             return Bool(token)
 
         elif token.type == NOT:
             self.eat(NOT)
-            node = UnaryOp(op=token, expr=self.conexpr())
-        elif token.type == AND:
-            node = self.compexpr()
-            while self.current_token.type == AND:
-                self.eat(AND)
-                node = BinOp(left=node, op=token, right=self.compexpr())
+            node = UnaryOp(op=token, expr=self.compexpr)
+
+        else:
+            node = self.numexpr()
+
+            while self.current_token.type in (LESS, LESS_EQ, GREAT_EQ, GREAT, EQUAL, DIFF):
+                token = self.current_token
+                if token.type == LESS:
+                    self.eat(LESS)
+                elif token.type == LESS_EQ:
+                    self.eat(LESS_EQ)
+                elif token.type == GREAT_EQ:
+                    self.eat(GREAT_EQ)
+                elif token.type == GREAT:
+                    self.eat(GREAT)
+                elif token.type == EQUAL:
+                    self.eat(EQUAL)
+                elif token.type == DIFF:
+                    self.eat(DIFF)
+
+                node = BinOp(left=node, op=token, right=self.numexpr())
+
+        return node
+
+    def conexpr(self):
+        node = self.compexpr()
+        while self.current_token.type == AND:
+            token = self.current_token
+            self.eat(AND)
+            node = BinOp(left=node, op=token, right=self.compexpr())
 
 
         return node
