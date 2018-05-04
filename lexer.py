@@ -19,6 +19,8 @@ BOOLEAN = 'BOOLEAN'
 LPAREN = '('
 RPAREN = ')'
 
+VAR = 'VAR'
+
 class Token(object):
 
     def __init__(self, type, value):
@@ -83,6 +85,14 @@ class Lexer(object):
         else:
             self.error()
 
+    def variable(self):
+        result = ''
+        while self.current_char is not None and (self.current_char.isalpha() or self.current_char.isdigit()):
+            result += self.current_char
+            self.advance()
+        return result
+
+
 
     def get_next_token(self):
 
@@ -97,6 +107,9 @@ class Lexer(object):
 
             if self.current_char == 'T' or self.current_char == 'F':
                 return Token(BOOLEAN, self.boolean(self.current_char))
+
+            if self.current_char.isalpha():
+                return Token(VAR, self.variable())
 
             if self.current_char == '+':
                 self.advance()

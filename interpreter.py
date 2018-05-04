@@ -11,8 +11,9 @@ class NodeVisitor(object):
         raise Exception('No visit_{} method'.format(type(node).__name__))
 
 class Interpreter(NodeVisitor):
-    def __init__(self, parser):
+    def __init__(self, parser, variables):
         self.parser = parser
+        self.vars = variables
 
     def visit_BinOp(self, node):
         if node.op.type == PLUS:
@@ -36,12 +37,6 @@ class Interpreter(NodeVisitor):
         elif node.op.type == EQUAL:
             return self.visit(node.left) == self.visit(node.right)
         elif node.op.type == AND:
-
-            left = self.visit(node.left) 
-            right = self.visit(node.right)
-            print "Left: %s" % left
-            print "Right: %s" % right
-
             return self.visit(node.left) and self.visit(node.right)
         elif node.op.type == OR:
             return self.visit(node.left) or self.visit(node.right)
@@ -51,6 +46,9 @@ class Interpreter(NodeVisitor):
 
     def visit_Bool(self, node):
         return node.value
+
+    def visit_Var(self, node):
+        return self.vars[node.value]
 
     def visit_UnaryOp(self, node):
         op = node.op.type
@@ -62,6 +60,7 @@ class Interpreter(NodeVisitor):
         return self.visit(tree)
 
 def main():
+    variables = {"test1": 1, "bac": 3}
     while True:
         try:
             text = raw_input('simple>')
@@ -72,7 +71,7 @@ def main():
 
         lexer = Lexer(text)
         parser = Parser(lexer)
-        interpreter = Interpreter(parser)
+        interpreter = Interpreter(parser, variables)
         result = interpreter.interpret()
         print(result)
            

@@ -24,6 +24,11 @@ class Bool(AST):
         self.token = token
         self.value = token.value
 
+class Var(AST):
+    def __init__(self, token):
+        self.token = token
+        self.value = token.value
+
 
 class Parser(object):
     def __init__(self, lexer):
@@ -44,6 +49,11 @@ class Parser(object):
         if token.type == INTEGER:
             self.eat(INTEGER)
             return Num(token)
+
+        elif token.type == VAR:
+            self.eat(VAR)
+            return Var(token)
+
         elif token.type == LPAREN:
             self.eat(LPAREN)
             node = self.expr()
