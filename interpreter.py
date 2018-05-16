@@ -85,6 +85,11 @@ class Interpreter(NodeVisitor):
         self.distances =  []
         return d
 
+    def compute_distance_v2(self, num_var, bool_var):
+        d = float(min(self.distances))/(self.num_weight*num_var + self.bool_weight*bool_var)
+        self.distances = []
+        return d
+
     def get_weight(self, node):
         if self.vars[node.value].is_bool_var():
             w = self.bool_weight
