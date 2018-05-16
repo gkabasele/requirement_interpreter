@@ -80,14 +80,12 @@ class Interpreter(NodeVisitor):
                 weight = self.get_weight(node_right)
             self.distances.append(weight * abs( val_left - val_right))
 
-    def compute_distance(self, num_var, bool_var):
-        d =  float(sum(self.distances))/(self.num_weight*num_var + self.bool_weight*bool_var)
+    def compute_distance(self, num_var, bool_var, normal=True):
+        if normal: 
+            d =  float(sum(self.distances))/(self.num_weight*num_var + self.bool_weight*bool_var)
+        else:
+            d = float(min(self.distances))/(self.num_weight*num_var + self.bool_weight*bool_var)
         self.distances =  []
-        return d
-
-    def compute_distance_v2(self, num_var, bool_var):
-        d = float(min(self.distances))/(self.num_weight*num_var + self.bool_weight*bool_var)
-        self.distances = []
         return d
 
     def get_weight(self, node):
