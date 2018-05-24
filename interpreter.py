@@ -123,7 +123,6 @@ class Interpreter(NodeVisitor):
                 else:
                    dist_vars_mapping[self.mapping_id_var[dist.node_id]] = dist.val
             
-            print dist_vars_mapping
             d = float(sum(dist_vars_mapping.itervalues()))/(self.num_weight*num_var + self.bool_weight*bool_var)
         self.distances =  []
         return d
