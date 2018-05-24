@@ -7,27 +7,32 @@ class UnaryOp(AST):
     def __init__(self, op, expr):
         self.token = self.op = op
         self.expr = expr
+        self.id = None
 
 class BinOp(AST):
     def __init__(self, left, op, right):
         self.left = left
         self.token = self.op = op
         self.right = right
+        self.id = None
 
 class Num(AST):
     def __init__(self, token):
         self.token = token
         self.value = token.value
+        self.id = None
 
 class Bool(AST):
     def __init__(self, token):
         self.token = token
         self.value = token.value
+        self.id = None
 
 class Var(AST):
     def __init__(self, token):
         self.token = token
         self.value = token.value
+        self.id = None
 
 
 class Parser(object):
@@ -56,7 +61,7 @@ class Parser(object):
 
         elif token.type == LPAREN:
             self.eat(LPAREN)
-            node = self.expr()
+            node = self.boolexpr()
             self.eat(RPAREN)
             return node
 

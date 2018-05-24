@@ -13,7 +13,12 @@ class ProcessVariable():
 
 def main():
 
-    variables = {"test": ProcessVariable( bool, 1), "ab": ProcessVariable( int, 40)}
+    variables = {
+                    "test": ProcessVariable( bool, 1),
+                    "ab": ProcessVariable( int, 30),
+                    "cd": ProcessVariable( int, 15),
+                    "ef": ProcessVariable( int, 50) 
+                }
 
     while True:
         try:
@@ -27,8 +32,9 @@ def main():
         parser = Parser(lexer)
         interpreter = Interpreter(parser, variables)
         result = interpreter.interpret()
+        print interpreter.mapping_id_var
         print interpreter.distances
-        print interpreter.compute_distance(1,1)
+        print interpreter.compute_distance(3,1, False)
         print(result)
 
 if __name__ == '__main__':
