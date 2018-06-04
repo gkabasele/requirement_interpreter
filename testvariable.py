@@ -17,7 +17,11 @@ def main():
                     "test": ProcessVariable( bool, 1),
                     "ab": ProcessVariable( int, 30),
                     "cd": ProcessVariable( int, 15),
-                    "ef": ProcessVariable( int, 50) 
+                    "ef": ProcessVariable( int, 50), 
+                    "t3" : ProcessVariable( int,0),
+                    "v1" : ProcessVariable( bool, 0),
+                    "v2" : ProcessVariable( bool, 0),
+                    "v3" : ProcessVariable( bool, 0)
                 }
 
     while True:

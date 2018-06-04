@@ -25,11 +25,13 @@ class DistanceVal(object):
 class Interpreter(NodeVisitor):
     def __init__(self, parser, variables, num_weight=1, bool_weight=5):
         self.parser = parser
+        # variable is a dict name -> process_variable
         self.vars = variables
         self.distances = []
         self.num_weight = num_weight
         self.bool_weight = bool_weight
         self.current_node_id = 0
+        # node_id -> name_var
         self.mapping_id_var = {}
 
     def set_current_node_id(self, node):
@@ -115,15 +117,20 @@ class Interpreter(NodeVisitor):
         else:
             # We only take, for each variable, the minimum between all distances for a variable, A in [10,30]
             # A = 25, dist(A) = min(|10-25|, |30-25|) = 5
+            # We have a dict giving the id of the variable in the tree, and for each distance we know which "instance" of the variable was used
+
+            # name_var -> minimum_dist
             dist_vars_mapping = {}
             for dist in self.distances:
-                if self.mapping_id_var[dist.node_id] in dist_vars_mapping:
-                    dist_vars_mapping[self.mapping_id_var[dist.node_id]] = min(
-                                            dist_vars_mapping[self.mapping_id_var[dist.node_id]], dist.val)
+                varname = self.mapping_id_var[dist.node_id]
+                if varname in dist_vars_mapping:
+                    if self.vars[varname].is_bool_var():
+                        dist_vars_mapping[varname].append(dist.val)
+                    else:
+                        dist_vars_mapping[varname] = [min(dist_vars_mapping[varname], dist.val)]
                 else:
-                   dist_vars_mapping[self.mapping_id_var[dist.node_id]] = dist.val
-            
-            d = float(sum(dist_vars_mapping.itervalues()))/(self.num_weight*num_var + self.bool_weight*bool_var)
+                    dist_vars_mapping[varname] = [dist.val]
+            d = float(sum([val for sublist in dist_vars_mapping.itervalues() for val in sublist]))/(self.num_weight*num_var + self.bool_weight*bool_var)
         self.distances =  []
         return d
 
