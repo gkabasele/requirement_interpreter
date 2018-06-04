@@ -127,7 +127,7 @@ class Interpreter(NodeVisitor):
                     if self.vars[varname].is_bool_var():
                         dist_vars_mapping[varname].append(dist.val)
                     else:
-                        dist_vars_mapping[varname] = [min(dist_vars_mapping[varname], dist.val)]
+                        dist_vars_mapping[varname] = [min(dist_vars_mapping[varname][0], dist.val)]
                 else:
                     dist_vars_mapping[varname] = [dist.val]
             d = float(sum([val for sublist in dist_vars_mapping.itervalues() for val in sublist]))/(self.num_weight*num_var + self.bool_weight*bool_var)
