@@ -104,11 +104,13 @@ class Interpreter(NodeVisitor):
             if type(node_left) is Var:
                 identifier = node_left.id
                 weight = self.get_weight(node_left)
+                gap = self.get_gap(node_left)
             elif type(node_right) is Var:
                 identifier = node_right.id
                 weight = self.get_weight(node_right)
+                gap = self.get_gap(node_right)
 
-            dist = weight * abs( val_left - val_right)
+            dist = weight * (float(abs( val_left - val_right)))/gap
             self.distances.append(DistanceVal(str(identifier), dist))
 
     def compute_distance(self, num_var, bool_var, normal=True):
@@ -140,6 +142,10 @@ class Interpreter(NodeVisitor):
         else:
             w = self.num_weight
         return w
+
+    def get_gap(self, node):
+        g = self.vars[node.value].gap
+        return g
 
 
 
