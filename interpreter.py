@@ -132,7 +132,7 @@ class Interpreter(NodeVisitor):
                         dist_vars_mapping[varname] = [min(dist_vars_mapping[varname][0], dist.val)]
                 else:
                     dist_vars_mapping[varname] = [dist.val]
-            d = float(sum([val for sublist in dist_vars_mapping.itervalues() for val in sublist]))/(self.num_weight*num_var + self.bool_weight*bool_var)
+            d = float(sum([val for sublist in dist_vars_mapping.values() for val in sublist]))/(self.num_weight*num_var + self.bool_weight*bool_var)
         self.distances =  []
         return d
 
@@ -153,7 +153,7 @@ def main():
     variables = {"test1": 1, "bac": 3}
     while True:
         try:
-            text = raw_input('simple>')
+            text = input('simple>')
         except EOFError:
             break
         if not text:

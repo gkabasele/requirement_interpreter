@@ -27,7 +27,7 @@ def main():
 
     while True:
         try:
-            text = raw_input('simple>')
+            text = input('simple>')
         except EOFError:
             break
         if not text:
@@ -37,9 +37,9 @@ def main():
         parser = Parser(lexer)
         interpreter = Interpreter(parser, variables)
         result = interpreter.interpret()
-        print interpreter.mapping_id_var
-        print interpreter.distances
-        print interpreter.compute_distance(4,4, False)
+        print(interpreter.mapping_id_var)
+        print(interpreter.distances)
+        print(interpreter.compute_distance(4,4, False))
         print(result)
 
 if __name__ == '__main__':
