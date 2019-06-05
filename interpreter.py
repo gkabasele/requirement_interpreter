@@ -1,5 +1,6 @@
 from parser import *
 from lexer import *
+import pdb
 
 class NodeVisitor(object):
     def visit(self, node):
@@ -122,6 +123,7 @@ class Interpreter(NodeVisitor):
             # We have a dict giving the id of the variable in the tree, and for each distance we know which "instance" of the variable was used
 
             # name_var -> minimum_dist
+            pdb.set_trace()
             dist_vars_mapping = {}
             for dist in self.distances:
                 varname = self.mapping_id_var[dist.node_id]
